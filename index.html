@@ -133,7 +133,8 @@
                 });
 
                 // 为菜单项添加点击事件
-                $('.mdui-list-item').on('click', function() {
+                $('.mdui-list-item').on('click', function(e) {
+                    e.preventDefault(); // 防止默认行为
                     const path = $(this).data('path');
                     loadContent(path);
                     if (window.innerWidth <= 1024) {
@@ -155,6 +156,10 @@
                 .then(markdown => {
                     $('#content').html(marked(markdown));
                     mdui.mutation();
+                })
+                .catch(error => {
+                    console.error('Error loading content:', error);
+                    $('#content').html('<p>加载内容时出错。请稍后再试。</p>');
                 });
         }
 
