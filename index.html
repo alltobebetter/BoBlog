@@ -59,11 +59,7 @@
         }
         @media (max-width: 1024px) {
             .mdui-drawer {
-                position: fixed;
-                top: 64px;
-                height: calc(100% - 64px);
                 transform: translateX(-100%);
-                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 box-shadow: none;
             }
             .mdui-drawer-open {
@@ -75,7 +71,6 @@
             }
             .content-wrapper {
                 left: 0 !important;
-                width: 100%;
             }
         }
         .mdui-theme-layout-dark .mdui-toolbar {
@@ -157,10 +152,6 @@
                 .then(markdown => {
                     $('#content').html(marked(markdown));
                     mdui.mutation();
-                    // 在移动端加载内容后关闭抽屉
-                    if (window.innerWidth <= 1024) {
-                        inst.close();
-                    }
                 });
         }
 
@@ -172,21 +163,8 @@
             $(this).find('i').text(isDark ? 'brightness_5' : 'brightness_4');
         });
 
-        // 响应式处理
-        $(window).on('resize', function() {
-            if (window.innerWidth > 1024) {
-                inst.open();
-            } else {
-                inst.close();
-            }
-        });
-
-        // 初始化时根据屏幕宽度决定是否打开侧边栏
-        if (window.innerWidth > 1024) {
-            inst.open();
-        } else {
-            inst.close();
-        }
+        // 初始化时保持侧边栏关闭 (根据需求决定是否保留)
+        // inst.close(); 
     </script>
 </body>
 </html>
