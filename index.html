@@ -111,7 +111,7 @@
 
     <script>
         const $ = mdui.$;
-        const inst = new mdui.Drawer('#left-drawer', {swipe: true});
+        const inst = new mdui.Drawer('#left-drawer', { swipe: false }); // 禁用swipe，避免触摸冲突
 
         // 读取sidebar.md并生成菜单
         fetch('sidebar.md')
@@ -133,10 +133,11 @@
                 });
 
                 // 为菜单项添加点击事件
-                $('.mdui-list-item').on('click', function(e) {
-                    e.preventDefault(); // 防止默认行为
+                $('.mdui-list-item').on('click', function() {
                     const path = $(this).data('path');
                     loadContent(path);
+
+                    // 强制关闭移动端侧边栏
                     if (window.innerWidth <= 1024) {
                         inst.close();
                     }
@@ -156,10 +157,6 @@
                 .then(markdown => {
                     $('#content').html(marked(markdown));
                     mdui.mutation();
-                })
-                .catch(error => {
-                    console.error('Error loading content:', error);
-                    $('#content').html('<p>加载内容时出错。请稍后再试。</p>');
                 });
         }
 
