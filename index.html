@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MDUI 项目</title>
+    <title>Bob</title>
     <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css">
     <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -64,6 +64,7 @@
                             loadContent(path);
                             const inst = new mdui.Drawer('#left-drawer');
                             inst.close(); // 点击后关闭菜单
+                            mdui.mutation(); // 手动触发MDUI的DOM更新
                         });
                         sidebarMenu.appendChild(li);
                     }
