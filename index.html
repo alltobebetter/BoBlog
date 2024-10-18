@@ -8,11 +8,13 @@
     <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-        .mdui-appbar {
-            background-color: #ffffff !important;
+        .mdui-appbar .mdui-toolbar {
+            background-color: #ffffff;
+            color: rgba(0, 0, 0, 0.87);
         }
-        .mdui-theme-layout-dark .mdui-appbar {
-            background-color: #303030 !important;
+        .mdui-theme-layout-dark .mdui-appbar .mdui-toolbar {
+            background-color: #303030;
+            color: #ffffff;
         }
         .content-card {
             margin: 16px;
@@ -21,7 +23,7 @@
 </head>
 <body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-pink">
     <header class="mdui-appbar mdui-appbar-fixed">
-        <div class="mdui-toolbar mdui-color-theme">
+        <div class="mdui-toolbar">
             <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#left-drawer'}">
                 <i class="mdui-icon material-icons">menu</i>
             </a>
@@ -44,22 +46,6 @@
     </div>
 
     <script>
-        const drawer = new mdui.Drawer('#left-drawer');
-
-        function closeDrawerAndRemoveOverlay() {
-            drawer.close();
-            setTimeout(() => {
-                const overlay = document.querySelector('.mdui-overlay');
-                if (overlay) {
-                    overlay.remove();
-                }
-                document.body.classList.remove('mdui-drawer-body-left');
-                setTimeout(() => {
-                    document.body.classList.add('mdui-drawer-body-left');
-                }, 0);
-            }, 300);
-        }
-
         // 读取sidebar.md并生成菜单
         fetch('sidebar.md')
             .then(response => response.text())
@@ -76,10 +62,7 @@
                             <i class="mdui-list-item-icon mdui-icon material-icons">${icon}</i>
                             <div class="mdui-list-item-content">${name}</div>
                         `;
-                        li.addEventListener('click', () => {
-                            loadContent(path);
-                            closeDrawerAndRemoveOverlay();
-                        });
+                        li.addEventListener('click', () => loadContent(path));
                         sidebarMenu.appendChild(li);
                     }
                 });
