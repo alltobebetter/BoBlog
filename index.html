@@ -46,6 +46,7 @@
     </div>
 
     <script>
+        const $ = mdui.$;
         const drawer = new mdui.Drawer('#left-drawer');
 
         // 读取sidebar.md并生成菜单
@@ -93,6 +94,15 @@
             document.body.classList.toggle('mdui-theme-layout-dark');
             const icon = themeToggle.querySelector('i');
             icon.textContent = icon.textContent === 'brightness_4' ? 'brightness_7' : 'brightness_4';
+        });
+
+        // 监听抽屉状态变化
+        $('#left-drawer').on('open.mdui.drawer', function () {
+            $('body').addClass('mdui-drawer-body-left');
+        });
+
+        $('#left-drawer').on('close.mdui.drawer', function () {
+            $('body').removeClass('mdui-drawer-body-left');
         });
     </script>
 </body>
