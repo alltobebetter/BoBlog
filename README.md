@@ -1,77 +1,69 @@
-# BoBlog / 轻量级简洁博客文档系统
+# Boblog / 轻量级免部署文档系统
 
-## 项目简介
+这是一个基于 MDUI 设计的网页项目，包含头部菜单、响应式菜单抽屉、侧边栏、支持 Markdown 解析的内容卡片，以及黑白模式切换功能。
 
-MDUI Project 是一个基于 MDUI 框架的响应式网页应用程序。它提供了一个简洁、现代的用户界面，支持动态加载 Markdown 内容、主题切换和响应式设计。
+## 项目结构
 
-## 特性
+```
+项目目录/
+│
+├── index.html          # 主页面文件
+├── sidebar.md          # 侧边栏菜单配置文件
+├── pages/             # 存放 Markdown 内容文件的目录
+│   ├── exp1.md
+│   └── exp2.md
+└── README.md           # 项目说明文档
+```
 
-- 响应式设计，适配桌面和移动设备
-- 动态侧边栏菜单
-- Markdown 内容渲染
-- 明暗主题切换
-- 平滑的过渡动画效果
+## 功能概述
 
-## 技术栈
-
-- HTML5
-- CSS3
-- JavaScript (ES6+)
-- [MDUI](https://www.mdui.org/) - Material Design 风格的前端框架
-- [Marked](https://marked.js.org/) - Markdown 解析器
-
-## 安装
-
-1. 克隆仓库：
-   ```
-   git clone https://github.com/your-username/mdui-project.git
-   ```
-2. 进入项目目录：
-   ```
-   cd mdui-project
-   ```
-3. 使用您喜欢的网页服务器启动项目。例如，如果您安装了 Python，可以使用：
-   ```
-   python -m http.server 8000
-   ```
-   然后在浏览器中访问 `http://localhost:8000`。
+1. **头部菜单**：在页面顶部显示，默认白色背景，支持黑白模式切换。
+2. **响应式菜单抽屉**：点击菜单图标展开或收起侧边栏。
+3. **侧边栏**：从 `sidebar.md` 文件中读取配置，动态生成菜单。
+4. **内容卡片**：每个菜单项对应一个卡片，卡片内容从指定的 Markdown 文件中读取并解析。
+5. **黑白模式切换**：通过点击按钮切换页面的主题颜色。
 
 ## 使用说明
 
-1. 创建 `sidebar.md` 文件来定义侧边栏菜单项。格式如下：
-   ```
-   [icon][菜单名称][文件路径]
-   ```
-   例如：
-   ```
-   [home][首页][home.md]
-   [info][关于][about.md]
-   ```
+### 1. 准备工作
 
-2. 为每个菜单项创建对应的 Markdown 文件，放置在项目根目录下。
+- 确保在项目目录下创建 `sidebar.md` 文件，并按照以下格式填写菜单项：
 
-3. 打开 `index.html` 文件，您将看到基于 `sidebar.md` 生成的菜单，点击菜单项可以加载对应的 Markdown 内容。
+  ```markdown
+  [info][菜单][caidan.md]
+  [search][搜索][/pages/sousuo.md]
+  ```
 
-4. 使用右上角的图标切换明暗主题。
+  - `[info]`：图标名称，使用 MDUI 的 Material Icons。
+  - `[菜单]`：菜单显示名称。
+  - `[caidan.md]`：对应的 Markdown 内容文件路径。
 
-## 自定义
+- 在 `pages/` 目录下创建相应的 Markdown 文件（如 `caidan.md`、`sousuo.md`），用于存放每个菜单项的内容。
 
-- 修改 `<style>` 标签中的 CSS 来自定义界面样式。
-- 在 `<script>` 标签中修改 JavaScript 代码来调整功能。
+### 2. 运行项目
+
+- 打开 `index.html` 文件，即可在浏览器中查看项目效果。
+
+### 3. 自定义
+
+- **样式调整**：可以在 `index.html` 中的 `<style>` 标签内调整样式，以满足个性化需求。
+- **图标更换**：在 `sidebar.md` 中更改图标名称，以使用不同的 Material Icons。
+
+## 技术栈
+
+- **MDUI**：用于页面布局和组件样式。
+- **Marked.js**：用于解析和渲染 Markdown 内容。
+- **JavaScript**：用于动态生成菜单和切换主题。
+
+## 注意事项
+
+- 确保您的服务器支持读取本地文件，否则可能会遇到跨域问题。
+- 如果遇到图标显示问题，可能需要调整 MDUI 图标库的引用。
 
 ## 贡献
 
-欢迎提交 issues 和 pull requests 来帮助改进这个项目。
+如果您对该项目有任何建议或改进，欢迎提交 Pull Request 或 Issue。
 
 ## 许可证
 
-本项目采用 MIT 许可证。详情请见 [LICENSE](LICENSE) 文件。
-
-## 联系方式
-
-如果您有任何问题或建议，请通过以下方式联系我们：
-
-- 邮箱：your-email@example.com
-- GitHub：[您的 GitHub 主页]
-
-感谢您使用 BoBlog.
+该项目使用 MIT 许可证。
