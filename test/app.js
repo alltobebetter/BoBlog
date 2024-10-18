@@ -34,12 +34,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 加载内容
     function loadContent(path, title) {
-        fetch(path)
-            .then(response => response.text())
+        // 移除开头的斜杠（如果存在）
+        const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+        
+        fetch(cleanPath)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('文件不存在');
+                }
+                return response.text();
+            })
             .then(markdown => {
                 cardTitle.text(title);
                 const html = DOMPurify.sanitize(marked.parse(markdown));
                 cardContent.html(html);
+            })
+            .catch(error => {
+                console.error('加载内容出错:', error);
+                cardTitle.text('错误');
+                cardContent.html('<p>无法加载内容。请确保文件路径正确。</p>');
             });
     }
 
