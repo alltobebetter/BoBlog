@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bob</title>
+    <title>MDUI 项目</title>
     <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css">
     <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -44,6 +44,22 @@
     </div>
 
     <script>
+        const drawer = new mdui.Drawer('#left-drawer');
+
+        function closeDrawerAndRemoveOverlay() {
+            drawer.close();
+            setTimeout(() => {
+                const overlay = document.querySelector('.mdui-overlay');
+                if (overlay) {
+                    overlay.remove();
+                }
+                document.body.classList.remove('mdui-drawer-body-left');
+                setTimeout(() => {
+                    document.body.classList.add('mdui-drawer-body-left');
+                }, 0);
+            }, 300);
+        }
+
         // 读取sidebar.md并生成菜单
         fetch('sidebar.md')
             .then(response => response.text())
@@ -62,9 +78,7 @@
                         `;
                         li.addEventListener('click', () => {
                             loadContent(path);
-                            const inst = new mdui.Drawer('#left-drawer');
-                            inst.close(); // 点击后关闭菜单
-                            mdui.mutation(); // 手动触发MDUI的DOM更新
+                            closeDrawerAndRemoveOverlay();
                         });
                         sidebarMenu.appendChild(li);
                     }
