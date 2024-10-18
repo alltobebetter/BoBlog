@@ -8,13 +8,11 @@
     <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-        .mdui-appbar .mdui-toolbar {
-            background-color: #ffffff;
-            color: rgba(0, 0, 0, 0.87);
+        .mdui-appbar {
+            background-color: #ffffff !important;
         }
-        .mdui-theme-layout-dark .mdui-appbar .mdui-toolbar {
-            background-color: #303030;
-            color: #ffffff;
+        .mdui-theme-layout-dark .mdui-appbar {
+            background-color: #303030 !important;
         }
         .content-card {
             margin: 16px;
@@ -23,7 +21,7 @@
 </head>
 <body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-pink">
     <header class="mdui-appbar mdui-appbar-fixed">
-        <div class="mdui-toolbar">
+        <div class="mdui-toolbar mdui-color-theme">
             <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#left-drawer'}">
                 <i class="mdui-icon material-icons">menu</i>
             </a>
@@ -46,8 +44,6 @@
     </div>
 
     <script>
-        const drawer = new mdui.Drawer('#left-drawer');
-        
         // 读取sidebar.md并生成菜单
         fetch('sidebar.md')
             .then(response => response.text())
@@ -66,9 +62,8 @@
                         `;
                         li.addEventListener('click', () => {
                             loadContent(path);
-                            if (window.innerWidth <= 1024) {
-                                drawer.close();
-                            }
+                            const inst = new mdui.Drawer('#left-drawer');
+                            inst.close(); // 点击后关闭菜单
                         });
                         sidebarMenu.appendChild(li);
                     }
