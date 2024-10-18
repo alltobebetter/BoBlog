@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MDUI 项目</title>
+    <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+        .mdui-appbar .mdui-toolbar {
+            background-color: #fff;
+            color: #000;
+        }
+        .mdui-theme-layout-dark .mdui-appbar .mdui-toolbar {
+            background-color: #303030;
+            color: #fff;
+        }
+        .content-card {
+            margin: 16px;
+        }
+    </style>
+</head>
+<body class="mdui-appbar-with-toolbar mdui-drawer-body-left mdui-theme-primary-indigo mdui-theme-accent-pink">
+    <header class="mdui-appbar mdui-appbar-fixed">
+        <div class="mdui-toolbar mdui-color-theme">
+            <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar'}">
+                <i class="mdui-icon material-icons">menu</i>
+            </a>
+            <a href="javascript:;" class="mdui-typo-headline">MDUI 项目</a>
+            <div class="mdui-toolbar-spacer"></div>
+            <button id="theme-toggle" class="mdui-btn mdui-btn-icon">
+                <i class="mdui-icon material-icons">brightness_4</i>
+            </button>
+        </div>
+    </header>
+
+    <div class="mdui-drawer" id="sidebar">
+        <ul class="mdui-list" id="sidebar-menu"></ul>
+    </div>
+
+    <main class="mdui-container">
+        <div class="mdui-card content-card">
+            <div class="mdui-card-primary">
+                <div id="card-title" class="mdui-card-primary-title"></div>
+            </div>
+            <div id="card-content" class="mdui-card-content"></div>
+        </div>
+    </main>
+
+    <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
