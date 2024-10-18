@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MDUI 项目</title>
+    <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.5.95/css/materialdesignicons.min.css">
+    <style>
+        .mdui-theme-layout-dark .mdui-appbar {
+            background-color: #1e1e1e;
+        }
+        .mdui-theme-layout-dark .mdui-card {
+            background-color: #2c2c2c;
+        }
+        .mdui-appbar {
+            background-color: white;
+        }
+        .mdui-appbar .mdui-typo-title,
+        .mdui-appbar .mdui-btn {
+            color: rgba(0, 0, 0, 0.87);
+        }
+        .mdui-theme-layout-dark .mdui-appbar .mdui-typo-title,
+        .mdui-theme-layout-dark .mdui-appbar .mdui-btn {
+            color: rgba(255, 255, 255, 0.87);
+        }
+    </style>
+</head>
+<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-pink">
+    <header class="mdui-appbar mdui-appbar-fixed">
+        <div class="mdui-toolbar mdui-color-theme">
+            <span class="mdui-btn mdui-btn-icon mdui-ripple" mdui-drawer="{target: '#left-drawer'}">
+                <i class="mdui-icon material-icons">menu</i>
+            </span>
+            <a href="javascript:;" class="mdui-typo-headline">MDUI 项目</a>
+            <div class="mdui-toolbar-spacer"></div>
+            <button class="mdui-btn mdui-btn-icon" id="theme-toggle">
+                <i class="mdui-icon material-icons">brightness_4</i>
+            </button>
+        </div>
+    </header>
+
+    <div class="mdui-drawer" id="left-drawer">
+        <ul class="mdui-list" id="sidebar-menu"></ul>
+    </div>
+
+    <div class="mdui-container mdui-typo">
+        <div class="mdui-row">
+            <div class="mdui-col-xs-12 mdui-col-sm-10 mdui-col-offset-sm-1">
+                <div class="mdui-card mdui-m-t-4">
+                    <div class="mdui-card-primary">
+                        <div class="mdui-card-primary-title" id="card-title"></div>
+                    </div>
+                    <div class="mdui-card-content" id="card-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@2.3.3/dist/purify.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
