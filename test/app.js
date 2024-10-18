@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     fetch('sidebar.md')
         .then(response => response.text())
         .then(text => {
+            console.log('成功加载 sidebar.md');
             const lines = text.split('\n');
             lines.forEach(line => {
                 const match = line.match(/\[(.*?)\]\[(.*?)\]\[(.*?)\]/);
@@ -23,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     sidebar.append(li);
                 }
             });
+            console.log('侧边栏菜单项已创建');
             // 默认加载第一个菜单项
             if (lines.length > 0) {
                 const firstMatch = lines[0].match(/\[(.*?)\]\[(.*?)\]\[(.*?)\]/);
@@ -30,21 +32,29 @@ document.addEventListener('DOMContentLoaded', function() {
                     loadContent(firstMatch[3], firstMatch[2]);
                 }
             }
+        })
+        .catch(error => {
+            console.error('加载 sidebar.md 失败:', error);
+            sidebar.html('<li class="mdui-list-item">加载菜单失败</li>');
         });
 
     // 加载内容
     function loadContent(path, title) {
-        // 移除开头的斜杠（如果存在）
-        const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+        // 使用绝对路径
+        const absolutePath = '/' + (path.startsWith('/') ? path.slice(1) : path);
         
-        fetch(cleanPath)
+        console.log('尝试加载文件:', absolutePath);
+
+        fetch(absolutePath)
             .then(response => {
+                console.log('响应状态:', response.status);
                 if (!response.ok) {
-                    throw new Error('文件不存在');
+                    throw new Error(`HTTP 错误! 状态: ${response.status}`);
                 }
                 return response.text();
             })
             .then(markdown => {
+                console.log('成功加载文件内容');
                 cardTitle.text(title);
                 const html = DOMPurify.sanitize(marked.parse(markdown));
                 cardContent.html(html);
@@ -52,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => {
                 console.error('加载内容出错:', error);
                 cardTitle.text('错误');
-                cardContent.html('<p>无法加载内容。请确保文件路径正确。</p>');
+                cardContent.html(`<p>无法加载内容。错误信息: ${error.message}</p>`);
             });
     }
 
