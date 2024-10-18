@@ -10,18 +10,26 @@
     <style>
         .mdui-appbar {
             background-color: #ffffff;
+            color: rgba(0, 0, 0, 0.87);
         }
         .mdui-theme-layout-dark .mdui-appbar {
             background-color: #303030;
+            color: #ffffff;
         }
         .content-card {
             margin: 16px;
+        }
+        .mdui-toolbar .mdui-btn-icon {
+            color: rgba(0, 0, 0, 0.54);
+        }
+        .mdui-theme-layout-dark .mdui-toolbar .mdui-btn-icon {
+            color: rgba(255, 255, 255, 0.7);
         }
     </style>
 </head>
 <body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-pink">
     <header class="mdui-appbar mdui-appbar-fixed">
-        <div class="mdui-toolbar mdui-color-theme">
+        <div class="mdui-toolbar">
             <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#left-drawer'}">
                 <i class="mdui-icon material-icons">menu</i>
             </a>
@@ -44,6 +52,8 @@
     </div>
 
     <script>
+        const drawer = new mdui.Drawer('#left-drawer');
+
         // 读取sidebar.md并生成菜单
         fetch('sidebar.md')
             .then(response => response.text())
@@ -60,7 +70,10 @@
                             <i class="mdui-list-item-icon mdui-icon material-icons">${icon}</i>
                             <div class="mdui-list-item-content">${name}</div>
                         `;
-                        li.addEventListener('click', () => loadContent(path));
+                        li.addEventListener('click', () => {
+                            loadContent(path);
+                            drawer.close();
+                        });
                         sidebarMenu.appendChild(li);
                     }
                 });
