@@ -1,2 +1,2 @@
-[info][菜单][caidan.md]
+[info][菜单][菜单.md]
 [search][搜索][/caidan/sousuo.md]
