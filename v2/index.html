@@ -4,85 +4,89 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MDUI 项目</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@1.0.1/dist/css/mdui.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css">
+    <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-        /* 自定义样式 */
-        .dark-mode {
-            background-color: #333;
-            color: #fff;
+        .mdui-appbar {
+            background-color: #ffffff;
+        }
+        .mdui-theme-layout-dark .mdui-appbar {
+            background-color: #303030;
+        }
+        .content-card {
+            margin: 16px;
         }
     </style>
 </head>
-<body class="mdui-theme-primary-indigo mdui-theme-accent-pink">
-
-    <!-- 顶部菜单 -->
-    <div class="mdui-appbar mdui-appbar-fixed">
-        <div class="mdui-toolbar mdui-color-white">
-            <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#drawer'}">
+<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-pink">
+    <header class="mdui-appbar mdui-appbar-fixed">
+        <div class="mdui-toolbar mdui-color-theme">
+            <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#left-drawer'}">
                 <i class="mdui-icon material-icons">menu</i>
             </a>
-            <span class="mdui-typo-title">项目标题</span>
+            <a href="javascript:;" class="mdui-typo-headline">MDUI 项目</a>
             <div class="mdui-toolbar-spacer"></div>
-            <button class="mdui-btn mdui-btn-icon" onclick="toggleDarkMode()">
+            <button class="mdui-btn mdui-btn-icon" id="theme-toggle">
                 <i class="mdui-icon material-icons">brightness_4</i>
             </button>
         </div>
+    </header>
+
+    <div class="mdui-drawer" id="left-drawer">
+        <ul class="mdui-list" id="sidebar-menu"></ul>
     </div>
 
-    <!-- 侧边栏 -->
-    <div class="mdui-drawer" id="drawer">
-        <ul class="mdui-list" id="menu-list">
-            <!-- 菜单项将由JavaScript动态生成 -->
-        </ul>
-    </div>
-
-    <!-- 内容区域 -->
     <div class="mdui-container">
-        <div id="content">
-            <!-- 卡片内容将由JavaScript动态生成 -->
+        <div class="mdui-card content-card">
+            <div class="mdui-card-content" id="content"></div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/mdui@1.0.1/dist/js/mdui.min.js"></script>
     <script>
-        // 读取并解析 sidebar.md
+        // 读取sidebar.md并生成菜单
         fetch('sidebar.md')
             .then(response => response.text())
             .then(text => {
                 const lines = text.split('\n');
-                const menuList = document.getElementById('menu-list');
-                const content = document.getElementById('content');
-
+                const sidebarMenu = document.getElementById('sidebar-menu');
                 lines.forEach(line => {
-                    if (line.trim()) {
-                        const [icon, name, path] = line.match(/\[(.*?)\]/g).map(s => s.slice(1, -1));
-                        const listItem = document.createElement('li');
-                        listItem.className = 'mdui-list-item mdui-ripple';
-                        listItem.innerHTML = `<i class="mdui-list-item-icon mdui-icon material-icons">${icon}</i>
-                                              <div class="mdui-list-item-content">${name}</div>`;
-                        listItem.onclick = () => loadContent(path);
-                        menuList.appendChild(listItem);
+                    const match = line.match(/\[(.*?)\]\[(.*?)\]\[(.*?)\]/);
+                    if (match) {
+                        const [, icon, name, path] = match;
+                        const li = document.createElement('li');
+                        li.className = 'mdui-list-item mdui-ripple';
+                        li.innerHTML = `
+                            <i class="mdui-list-item-icon mdui-icon material-icons">${icon}</i>
+                            <div class="mdui-list-item-content">${name}</div>
+                        `;
+                        li.addEventListener('click', () => loadContent(path));
+                        sidebarMenu.appendChild(li);
                     }
                 });
+                // 默认加载第一个菜单项
+                if (lines.length > 0) {
+                    const firstPath = lines[0].match(/\[(.*?)\]\[(.*?)\]\[(.*?)\]/)[3];
+                    loadContent(firstPath);
+                }
             });
 
-        // 加载并显示内容
+        // 加载内容
         function loadContent(path) {
             fetch(path)
                 .then(response => response.text())
                 .then(markdown => {
-                    const card = document.createElement('div');
-                    card.className = 'mdui-card mdui-m-y-2';
-                    card.innerHTML = `<div class="mdui-card-content">${markdown}</div>`;
-                    content.innerHTML = '';
-                    content.appendChild(card);
+                    document.getElementById('content').innerHTML = marked.parse(markdown);
                 });
         }
 
-        // 切换黑白模式
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-        }
+        // 切换主题
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('mdui-theme-layout-dark');
+            const icon = themeToggle.querySelector('i');
+            icon.textContent = icon.textContent === 'brightness_4' ? 'brightness_7' : 'brightness_4';
+        });
     </script>
 </body>
 </html>
