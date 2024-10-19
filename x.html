@@ -40,6 +40,36 @@
         .mdui-theme-layout-dark .mdui-textfield-focus .mdui-textfield-close i {
             color: #ffffff !important;
         }
+        .toc-card {
+            position: sticky;
+            top: 80px;
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+        }
+        .toc-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .toc-item {
+            margin-bottom: 8px;
+        }
+        .toc-item a {
+            text-decoration: none;
+            color: rgba(0, 0, 0, 0.87);
+        }
+        .mdui-theme-layout-dark .toc-item a {
+            color: rgba(255, 255, 255, 0.87);
+        }
+        .toc-item.active > a {
+            font-weight: bold;
+            color: #1976d2;
+        }
+        .mdui-theme-layout-dark .toc-item.active > a {
+            color: #64b5f6;
+        }
+        .level-3 {
+            margin-left: 16px;
+        }
     </style>
 </head>
 <body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-pink">
@@ -70,13 +100,22 @@
     </div>
 
     <div class="mdui-container">
-        <div class="mdui-card content-card">
-            <div class="mdui-card-content" id="content"></div>
-        </div>
-        <div class="mdui-card search-container" id="search-container" style="display: none;">
-            <div class="mdui-card-content">
-                <h2>搜索结果</h2>
-                <div id="search-results" class="search-results"></div>
+        <div class="mdui-row">
+            <div class="mdui-col-md-3">
+                <div class="mdui-card toc-card">
+                    <div class="mdui-card-content" id="toc-container"></div>
+                </div>
+            </div>
+            <div class="mdui-col-md-9">
+                <div class="mdui-card content-card">
+                    <div class="mdui-card-content" id="content"></div>
+                </div>
+                <div class="mdui-card search-container" id="search-container" style="display: none;">
+                    <div class="mdui-card-content">
+                        <h2>搜索结果</h2>
+                        <div id="search-results" class="search-results"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -112,14 +151,60 @@
                 }
             });
 
+        function extractHeaders(markdown) {
+            const lines = markdown.split('\n');
+            const headers = [];
+            lines.forEach(line => {
+                if (line.startsWith('## ') || line.startsWith('### ')) {
+                    headers.push({
+                        level: line.startsWith('## ') ? 2 : 3,
+                        text: line.replace(/^#+\s/, ''),
+                        id: line.replace(/^#+\s/, '').toLowerCase().replace(/\s+/g, '-')
+                    });
+                }
+            });
+            return headers;
+        }
+
+        function createTableOfContents(headers) {
+            const toc = document.createElement('ul');
+            toc.className = 'toc-list';
+            headers.forEach(header => {
+                const li = document.createElement('li');
+                li.className = `toc-item level-${header.level}`;
+                const a = document.createElement('a');
+                a.href = `#${header.id}`;
+                a.textContent = header.text;
+                li.appendChild(a);
+                toc.appendChild(li);
+            });
+            return toc;
+        }
+
+        function updateMarkdownWithIds(markdown) {
+            return markdown.replace(/^(#{2,3})\s(.+)$/gm, (match, hashes, title) => {
+                const id = title.toLowerCase().replace(/\s+/g, '-');
+                return `${hashes} ${title} {#${id}}`;
+            });
+        }
+
         // 加载内容
         function loadContent(path) {
             fetch(path)
                 .then(response => response.text())
                 .then(markdown => {
-                    document.getElementById('content').innerHTML = marked.parse(markdown);
+                    const headers = extractHeaders(markdown);
+                    const toc = createTableOfContents(headers);
+                    const tocContainer = document.getElementById('toc-container');
+                    tocContainer.innerHTML = '';
+                    tocContainer.appendChild(toc);
+
+                    const updatedMarkdown = updateMarkdownWithIds(markdown);
+                    document.getElementById('content').innerHTML = marked.parse(updatedMarkdown);
                     document.querySelector('.content-card').style.display = 'block';
                     document.getElementById('search-container').style.display = 'none';
+
+                    setupScrollSpy();
                 });
         }
 
@@ -183,6 +268,29 @@
 
             searchContainer.style.display = 'block';
             document.querySelector('.content-card').style.display = 'none';
+        }
+
+        function setupScrollSpy() {
+            const tocItems = document.querySelectorAll('.toc-item');
+            const headers = document.querySelectorAll('#content h2, #content h3');
+
+            window.addEventListener('scroll', () => {
+                let currentActiveIndex = -1;
+                headers.forEach((header, index) => {
+                    const rect = header.getBoundingClientRect();
+                    if (rect.top <= 100) {
+                        currentActiveIndex = index;
+                    }
+                });
+
+                tocItems.forEach((item, index) => {
+                    if (index === currentActiveIndex) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+            });
         }
 
         // 初始化搜索功能
