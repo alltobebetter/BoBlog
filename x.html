@@ -18,6 +18,7 @@
         }
         .content-card, .search-container {
             margin-top: 16px;
+            margin-left: 25%; /* 为左侧目录腾出空间 */
         }
         .search-results {
             margin-top: 16px;
@@ -41,10 +42,12 @@
             color: #ffffff !important;
         }
         .toc-card {
-            position: sticky;
-            top: 80px;
+            position: fixed;
+            top: 80px; /* 调整这个值来增加与顶部的距离 */
+            left: 16px; /* 左侧边距 */
             max-height: calc(100vh - 100px);
             overflow-y: auto;
+            width: 22%; /* 根据需要调整宽度 */
         }
         .toc-list {
             list-style-type: none;
@@ -184,7 +187,7 @@
         function updateMarkdownWithIds(markdown) {
             return markdown.replace(/^(#{2,3})\s(.+)$/gm, (match, hashes, title) => {
                 const id = title.toLowerCase().replace(/\s+/g, '-');
-                return `${hashes} ${title} {#${id}}`;
+                return `${hashes} ${title}`;
             });
         }
 
@@ -205,6 +208,7 @@
                     document.getElementById('search-container').style.display = 'none';
 
                     setupScrollSpy();
+                    setupTocClickHandlers();
                 });
         }
 
@@ -288,6 +292,20 @@
                         item.classList.add('active');
                     } else {
                         item.classList.remove('active');
+                    }
+                });
+            });
+        }
+
+        function setupTocClickHandlers() {
+            const tocItems = document.querySelectorAll('.toc-item a');
+            tocItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = item.getAttribute('href').slice(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
                     }
                 });
             });
