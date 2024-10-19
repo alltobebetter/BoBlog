@@ -1,0 +1,32 @@
+.mdui-appbar .mdui-toolbar {
+    background-color: #ffffff;
+    color: rgba(0, 0, 0, 0.87);
+}
+.mdui-theme-layout-dark .mdui-appbar .mdui-toolbar {
+    background-color: #303030;
+    color: #ffffff;
+}
+.content-card, .search-container {
+    margin-top: 16px;
+}
+.search-results {
+    margin-top: 16px;
+}
+.mdui-textfield-focus .mdui-textfield-input,
+.mdui-textfield-focus .mdui-textfield-input:hover {
+    border-bottom-color: rgba(0, 0, 0, 0.87) !important;
+    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.87) !important;
+}
+.mdui-theme-layout-dark .mdui-textfield-focus .mdui-textfield-input,
+.mdui-theme-layout-dark .mdui-textfield-focus .mdui-textfield-input:hover {
+    border-bottom-color: #ffffff !important;
+    box-shadow: 0 1px 0 0 #ffffff !important;
+}
+.mdui-textfield-focus .mdui-textfield-icon i,
+.mdui-textfield-focus .mdui-textfield-close i {
+    color: rgba(0, 0, 0, 0.87) !important;
+}
+.mdui-theme-layout-dark .mdui-textfield-focus .mdui-textfield-icon i,
+.mdui-theme-layout-dark .mdui-textfield-focus .mdui-textfield-close i {
+    color: #ffffff !important;
+}
