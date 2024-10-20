@@ -1,4 +1,5 @@
 [home][首页][README.md]
 [link][友情链接][pages/friend.md]
 [flag][未来展望][pages/20241019/future.md]
+[book][文章][pages/20241020/article.md]
 [check][开源许可协议][LICENSE]
